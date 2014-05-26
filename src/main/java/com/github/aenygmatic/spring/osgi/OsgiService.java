@@ -40,7 +40,7 @@ public @interface OsgiService {
      * <p>
      * @return name of the service
      */
-    String name();
+    String name() default "";
 
     /**
      * The interface type as the service will be registered to the OSGI container. The annotated class must implement
@@ -48,5 +48,11 @@ public @interface OsgiService {
      * <p>
      * @return interface as the service will be registered
      */
-    Class<?> registration();
+    Class<?> registration() default ByInterfaceRegistration.class;
+
+    public static final class ByInterfaceRegistration {
+
+        private ByInterfaceRegistration() {
+        }
+    }
 }
