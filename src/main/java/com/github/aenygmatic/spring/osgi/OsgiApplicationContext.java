@@ -38,16 +38,19 @@ import org.springframework.context.NoSuchMessageException;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.io.Resource;
 
-import com.github.aenygmatic.spring.osgi.registration.SpringBoundleRegistry;
+import com.github.aenygmatic.spring.osgi.registration.SpringBundleRegistry;
 
 /**
- *
+ * Spring application context which also an OSGI bundle activator. To use this class for connect the Spring context to
+ * the OSGI container, you should extend this class and pass your spring application context in the constructor. After
+ * doing that you can set that class as your bundle activator.
+ * <p>
  * @author Balazs Berkes
  */
 public class OsgiApplicationContext implements ConfigurableApplicationContext, BundleActivator {
 
     private ConfigurableApplicationContext springContext;
-    private SpringBoundleRegistry boundleRegistry;
+    private SpringBundleRegistry boundleRegistry;
 
     public OsgiApplicationContext(ConfigurableApplicationContext springContext) {
         this.springContext = springContext;
@@ -55,9 +58,11 @@ public class OsgiApplicationContext implements ConfigurableApplicationContext, B
 
     @Override
     public void start(BundleContext bundleContext) throws Exception {
-        boundleRegistry = new SpringBoundleRegistry(springContext, bundleContext);
+        springContext.setParent(this);
+        springContext.getBeanFactory().registerSingleton("ApplicationContext", this);
+        springContext.refresh();
+        boundleRegistry = new SpringBundleRegistry(springContext, bundleContext);
         boundleRegistry.register();
-
     }
 
     @Override

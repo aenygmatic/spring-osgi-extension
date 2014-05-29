@@ -28,14 +28,14 @@ import org.springframework.context.ApplicationContext;
  * <p>
  * @author Balazs Berkes
  */
-public class SpringBoundleRegistry {
+public class SpringBundleRegistry {
 
     private final ApplicationContext springContext;
     private final BundleContext bundleContext;
     private final OsgiSpringComponentCollector collector;
     private final List<ServiceRegistration<?>> registrations;
 
-    public SpringBoundleRegistry(ApplicationContext springContext, BundleContext bundleContext) {
+    public SpringBundleRegistry(ApplicationContext springContext, BundleContext bundleContext) {
         this.springContext = springContext;
         this.bundleContext = bundleContext;
         this.collector = new OsgiSpringComponentCollector();

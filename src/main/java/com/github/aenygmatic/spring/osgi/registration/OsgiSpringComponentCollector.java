@@ -45,14 +45,14 @@ public class OsgiSpringComponentCollector {
     private Class<?> registration(Object bean) {
         Class<?> registration = bean.getClass().getAnnotation(OsgiService.class).registration();
         if (ByInterfaceRegistration.class.equals(registration)) {
-            registration = findImpementedInterface(bean.getClass());
+            registration = findImplementedInterface(bean.getClass());
         }
         return registration;
     }
 
-    private Class<?> findImpementedInterface(Class<? extends Object> clazz) {
+    private Class<?> findImplementedInterface(Class<? extends Object> clazz) {
         Class<?>[] interfaces = clazz.getInterfaces();
-        if (interfaces != null & interfaces.length > 0) {
+        if (interfaces != null && interfaces.length > 0) {
             return interfaces[0];
         } else {
             throw new NotRegistrableServiceException("Component annotated with @OsgiService must have a registration interface given or at least the class should implement an interface!");
