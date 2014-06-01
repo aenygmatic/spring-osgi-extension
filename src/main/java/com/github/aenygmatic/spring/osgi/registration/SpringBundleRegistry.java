@@ -33,7 +33,7 @@ public class SpringBundleRegistry {
     private final ApplicationContext springContext;
     private final BundleContext bundleContext;
     private final OsgiSpringComponentCollector collector;
-    private final List<ServiceRegistration<?>> registrations;
+    private final List<ServiceRegistration> registrations;
 
     public SpringBundleRegistry(ApplicationContext springContext, BundleContext bundleContext) {
         this.springContext = springContext;
@@ -48,15 +48,14 @@ public class SpringBundleRegistry {
         }
     }
 
-    private ServiceRegistration<?> registerService(SpringOsgiComponent component) {
+    private ServiceRegistration registerService(SpringOsgiComponent component) {
         return bundleContext.registerService(component.getRegistrationsAsString(), component.getBean(), component.getProperties());
     }
 
     public void unregister() {
-        for (ServiceRegistration<?> registration : registrations) {
+        for (ServiceRegistration registration : registrations) {
             registration.unregister();
         }
         registrations.clear();
     }
-
 }

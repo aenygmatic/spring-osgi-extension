@@ -44,9 +44,13 @@ public class OsgiSpringComponentCollector {
 
     private Class<?> registration(Object bean) {
         Class<?> registration = bean.getClass().getAnnotation(OsgiService.class).registration();
+
         if (ByInterfaceRegistration.class.equals(registration)) {
             registration = findImplementedInterface(bean.getClass());
+        } else if (!registration.isInstance(bean)) {
+            throw new NotRegistrableServiceException("@OsgiService registration must be impemented by the bean. Bean: " + bean.getClass() + " registration: " + registration);
         }
+
         return registration;
     }
 

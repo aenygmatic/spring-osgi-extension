@@ -50,7 +50,7 @@ import com.github.aenygmatic.spring.osgi.registration.SpringBundleRegistry;
 public class OsgiApplicationContext implements ConfigurableApplicationContext, BundleActivator {
 
     private ConfigurableApplicationContext springContext;
-    private SpringBundleRegistry boundleRegistry;
+    private SpringBundleRegistry bundleRegistry;
 
     public OsgiApplicationContext(ConfigurableApplicationContext springContext) {
         this.springContext = springContext;
@@ -61,21 +61,21 @@ public class OsgiApplicationContext implements ConfigurableApplicationContext, B
         springContext.setParent(this);
         springContext.getBeanFactory().registerSingleton("ApplicationContext", this);
         springContext.refresh();
-        boundleRegistry = new SpringBundleRegistry(springContext, bundleContext);
-        boundleRegistry.register();
+        bundleRegistry = new SpringBundleRegistry(springContext, bundleContext);
+        bundleRegistry.register();
     }
 
     @Override
     public void stop(BundleContext bundleContext) throws Exception {
-        boundleRegistry.unregister();
+        bundleRegistry.unregister();
         close();
     }
 
     @Override
     public void refresh() throws BeansException, IllegalStateException {
         springContext.refresh();
-        boundleRegistry.unregister();
-        boundleRegistry.register();
+        bundleRegistry.unregister();
+        bundleRegistry.register();
     }
 
     @Override
