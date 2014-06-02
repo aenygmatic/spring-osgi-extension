@@ -33,10 +33,6 @@ import org.springframework.context.ApplicationContext;
 
 import com.github.aenygmatic.spring.osgi.OsgiService;
 
-/**
- *
- * @author Balazs Berkes
- */
 public class OsgiSpringComponentCollectorTest {
 
     @Mock
@@ -57,7 +53,7 @@ public class OsgiSpringComponentCollectorTest {
 
         List<SpringOsgiComponent> components = underTest.findOsgiComponents(context);
 
-        assertProperties(components, expected, Callable.class, "java.util.concurrent.Callable");
+        assertProperties(components.get(0), expected, Callable.class, "java.util.concurrent.Callable");
     }
 
     @Test
@@ -67,7 +63,7 @@ public class OsgiSpringComponentCollectorTest {
 
         List<SpringOsgiComponent> components = underTest.findOsgiComponents(context);
 
-        assertProperties(components, expected, Runnable.class, "java.lang.Runnable");
+        assertProperties(components.get(0), expected, Runnable.class, "java.lang.Runnable");
     }
 
     @Test(expected = NotRegistrableServiceException.class)
@@ -86,10 +82,10 @@ public class OsgiSpringComponentCollectorTest {
         underTest.findOsgiComponents(context);
     }
 
-    private void assertProperties(List<SpringOsgiComponent> components, Object expected, Class<?> type, String typeAsString) {
-        assertEquals(expected, components.get(0).getBean());
-        assertEquals(type, components.get(0).getRegistration());
-        assertEquals(typeAsString, components.get(0).getRegistrationsAsString());
+    private void assertProperties(SpringOsgiComponent component, Object expected, Class<?> type, String typeAsString) {
+        assertEquals(expected, component.getBean());
+        assertEquals(type, component.getRegistration());
+        assertEquals(typeAsString, component.getRegistrationsAsString());
     }
 
     private void givenAnnotatedSpringComponent(Object bean) {
@@ -126,5 +122,4 @@ public class OsgiSpringComponentCollectorTest {
     @OsgiService
     private class OsgiObjectWithoutRegistrableInterface {
     }
-
 }

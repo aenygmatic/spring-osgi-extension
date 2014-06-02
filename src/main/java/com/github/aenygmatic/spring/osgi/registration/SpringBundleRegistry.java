@@ -30,16 +30,20 @@ import org.springframework.context.ApplicationContext;
  */
 public class SpringBundleRegistry {
 
-    private final ApplicationContext springContext;
-    private final BundleContext bundleContext;
     private final OsgiSpringComponentCollector collector;
     private final List<ServiceRegistration> registrations;
+    private final ApplicationContext springContext;
+    private final BundleContext bundleContext;
 
     public SpringBundleRegistry(ApplicationContext springContext, BundleContext bundleContext) {
+        this(new OsgiSpringComponentCollector(), new ArrayList<ServiceRegistration>(), springContext, bundleContext);
+    }
+
+    SpringBundleRegistry(OsgiSpringComponentCollector collector, List<ServiceRegistration> registrations, ApplicationContext springContext, BundleContext bundleContext) {
+        this.collector = collector;
+        this.registrations = registrations;
         this.springContext = springContext;
         this.bundleContext = bundleContext;
-        this.collector = new OsgiSpringComponentCollector();
-        this.registrations = new ArrayList<>();
     }
 
     public void register() {
