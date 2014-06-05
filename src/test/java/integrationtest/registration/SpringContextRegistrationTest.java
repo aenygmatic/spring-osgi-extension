@@ -22,14 +22,15 @@ import static org.mockito.Mockito.verify;
 
 import java.util.Dictionary;
 
-import integrationtest.registration.context.ApplicationContextHolder;
-import integrationtest.registration.context.SpringBundleService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.osgi.framework.BundleContext;
+
+import integrationtest.registration.context.ApplicationContextHolder;
+import integrationtest.registration.context.SpringBundleService;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
